@@ -14,22 +14,49 @@ namespace SiteMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<ContatoModel> contatos = _contatoRepositorio.ListarContatos();
+            return View(contatos);
         }
 
-        [HttpPost]
         public IActionResult Criar()
         {
             return View();
         }
 
-        public IActionResult Editar()
+        public IActionResult PaginaEditar(int id)
+        {
+            ContatoModel contato = _contatoRepositorio.BuscarContato(id);
+            return View(contato);
+        }
+
+        [HttpPost]
+        public IActionResult Editar(ContatoModel contato)
+        {
+            _contatoRepositorio.Editar(contato);
+            return RedirectToAction("Index");
+        }
+
+
+
+        public IActionResult BuscarContato()
         {
             return View();
         }
-        public IActionResult Deletar()
+
+        public IActionResult ConfirmarDelecao(int id)
         {
-            return View();
+            ContatoModel contato = _contatoRepositorio.BuscarContato(id);
+            return View(contato);
+        }
+
+        public IActionResult Deletar(int id)
+        {
+            bool deletado = _contatoRepositorio.Deletar(id);
+            if (deletado)
+            {
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
 
         [HttpPost]

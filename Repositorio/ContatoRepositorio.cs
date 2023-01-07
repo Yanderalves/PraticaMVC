@@ -11,6 +11,13 @@ namespace SiteMVC.Repositorio
             _context = context;
         }
 
+        public List<ContatoModel> ListarContatos()
+        {
+            List<ContatoModel> contatos = _context.Contatos.ToList();
+
+            return contatos;
+        }
+
         public ContatoModel Adicionar(ContatoModel contato)
         {
             if (contato != null)
@@ -22,14 +29,35 @@ namespace SiteMVC.Repositorio
             return contato;
         }
 
-        public ContatoModel Deletar(int id)
+        public bool Deletar(int id)
         {
-            throw new NotImplementedException();
+            ContatoModel contato = _context.Contatos.FirstOrDefault(x => x.Id == id);
+            if(contato != null)
+            {
+                _context.Contatos.Remove(contato);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public ContatoModel Editar(ContatoModel contato)
         {
-            throw new NotImplementedException();
+            ContatoModel contatoBanco = BuscarContato(contato.Id);
+            contatoBanco.Email = contato.Email;
+            contatoBanco.Nome = contato.Nome;
+            contatoBanco.Telefone = contato.Telefone;
+
+            _context.Contatos.Update(contatoBanco);
+            _context.SaveChanges();
+
+            return contatoBanco;
+        }
+
+        public ContatoModel BuscarContato(int id)
+        {
+            ContatoModel contato = _context.Contatos.Find(id);
+            return contato;
         }
     }
 }
