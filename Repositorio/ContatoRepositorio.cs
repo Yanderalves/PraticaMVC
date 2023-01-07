@@ -31,7 +31,7 @@ namespace SiteMVC.Repositorio
 
         public bool Deletar(int id)
         {
-            ContatoModel contato = _context.Contatos.FirstOrDefault(x => x.Id == id);
+            ContatoModel contato = BuscarContato(id);
             if(contato != null)
             {
                 _context.Contatos.Remove(contato);
