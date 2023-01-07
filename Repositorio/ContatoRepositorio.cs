@@ -3,7 +3,7 @@ using SiteMVC.Models;
 
 namespace SiteMVC.Repositorio
 {
-    public class ContatoRepositorio : IContato
+    public class ContatoRepositorio : IContatoRepositorio
     {
         private readonly BancoContext _context;
         public ContatoRepositorio(BancoContext context)
