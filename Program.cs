@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using SiteMVC.Data;
+using SiteMVC.Repositorio;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -8,6 +12,10 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddEntityFrameworkSqlServer().AddDbContext<BancoContext>( options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+        builder.Services.AddScoped<IContatoRepositorio, ContatoRepositorio>();
 
         var app = builder.Build();
 
