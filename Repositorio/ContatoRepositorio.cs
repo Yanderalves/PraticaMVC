@@ -29,14 +29,27 @@ namespace SiteMVC.Repositorio
             return contato;
         }
 
-        public ContatoModel Deletar(int id)
+        public bool Deletar(int id)
         {
-            throw new NotImplementedException();
+            ContatoModel contato = _context.Contatos.FirstOrDefault(x => x.Id == id);
+            if(contato != null)
+            {
+                _context.Contatos.Remove(contato);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public ContatoModel Editar(ContatoModel contato)
         {
             throw new NotImplementedException();
+        }
+
+        public ContatoModel BuscarContato(int id)
+        {
+            ContatoModel contato = _context.Contatos.Find(id);
+            return contato;
         }
     }
 }

@@ -27,9 +27,26 @@ namespace SiteMVC.Controllers
         {
             return View();
         }
-        public IActionResult Deletar()
+
+        public IActionResult BuscarContato()
         {
             return View();
+        }
+
+        public IActionResult ConfirmarDelecao(int id)
+        {
+            ContatoModel contato = _contatoRepositorio.BuscarContato(id);
+            return View(contato);
+        }
+
+        public IActionResult Deletar(int id)
+        {
+            bool deletado = _contatoRepositorio.Deletar(id);
+            if (deletado)
+            {
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
 
         [HttpPost]
