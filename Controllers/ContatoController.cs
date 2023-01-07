@@ -23,10 +23,20 @@ namespace SiteMVC.Controllers
             return View();
         }
 
-        public IActionResult Editar()
+        public IActionResult PaginaEditar(int id)
         {
-            return View();
+            ContatoModel contato = _contatoRepositorio.BuscarContato(id);
+            return View(contato);
         }
+
+        [HttpPost]
+        public IActionResult Editar(ContatoModel contato)
+        {
+            _contatoRepositorio.Editar(contato);
+            return RedirectToAction("Index");
+        }
+
+
 
         public IActionResult BuscarContato()
         {

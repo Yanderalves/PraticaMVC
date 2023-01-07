@@ -43,7 +43,15 @@ namespace SiteMVC.Repositorio
 
         public ContatoModel Editar(ContatoModel contato)
         {
-            throw new NotImplementedException();
+            ContatoModel contatoBanco = BuscarContato(contato.Id);
+            contatoBanco.Email = contato.Email;
+            contatoBanco.Nome = contato.Nome;
+            contatoBanco.Telefone = contato.Telefone;
+
+            _context.Contatos.Update(contatoBanco);
+            _context.SaveChanges();
+
+            return contatoBanco;
         }
 
         public ContatoModel BuscarContato(int id)
