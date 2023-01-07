@@ -11,6 +11,13 @@ namespace SiteMVC.Repositorio
             _context = context;
         }
 
+        public List<ContatoModel> ListarContatos()
+        {
+            List<ContatoModel> contatos = _context.Contatos.ToList();
+
+            return contatos;
+        }
+
         public ContatoModel Adicionar(ContatoModel contato)
         {
             if (contato != null)

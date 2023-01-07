@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<ContatoModel>
+
+@{
     ViewData["Title"] = "Listagem de contatos";
 }
 
@@ -21,43 +23,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>yander@mail.com</td>
-                <td>40028922</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic outlined example">
-                        <a asp-action="Editar" asp-controller="Contato" role="button" class="btn btn-outline-primary">Editar</a>
-                        <a asp-action="Deletar" asp-controller="Contato" role="button" class="btn btn-outline-danger">Deletar</a>
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>40028922</td>
-                <td>
-                    <div class="btn-group" role="group">
-                        <a asp-action="Editar" asp-controller="Contato" role="button" class="btn btn-outline-primary">Editar</a>
-                        <a asp-action="Deletar" asp-controller="Contato" role="button" class="btn btn-outline-danger">Deletar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Thornton</td>
-                <td>Strinson@teste</td>
-                <td>40028922</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic outlined example">
-                        <a asp-action="Editar" asp-controller="Contato" role="button" class="btn btn-outline-primary">Editar</a>
-                        <a asp-action="Deletar" asp-controller="Contato" role="button" class="btn btn-outline-danger">Deletar</a>
-                    </div>
-                </td>
-            </tr>
+            @if(Model != null && Model.Any()){
+                @foreach (ContatoModel item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Nome</td>
+                        <td>@item.Email</td>
+                        <td>@item.Telefone</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a asp-action="Editar" asp-route-id="@item.Id" asp-controller="Contato" role="button" class="btn btn-outline-primary">Editar</a>
+                                <a asp-action="Deletar" asp-route-id="@item.Id" asp-controller="Contato" role="button" class="btn btn-outline-danger">Deletar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>

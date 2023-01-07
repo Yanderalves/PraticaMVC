@@ -14,10 +14,10 @@ namespace SiteMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<ContatoModel> contatos = _contatoRepositorio.ListarContatos();
+            return View(contatos);
         }
 
-        [HttpPost]
         public IActionResult Criar()
         {
             return View();

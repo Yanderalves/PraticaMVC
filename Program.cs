@@ -13,7 +13,7 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
-        builder.Services.AddEntityFrameworkSqlServer().AddDbContext<BancoContext>( options =>
+        builder.Services.AddDbContext<BancoContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         builder.Services.AddScoped<IContatoRepositorio, ContatoRepositorio>();
 

@@ -7,5 +7,6 @@ namespace SiteMVC.Repositorio
         ContatoModel Adicionar(ContatoModel contato);
         ContatoModel Editar(ContatoModel contato);
         ContatoModel Deletar(int id);
+        List<ContatoModel> ListarContatos();
     }
 }
