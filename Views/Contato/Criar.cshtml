@@ -4,22 +4,24 @@
     ViewData["Title"] = "Criar contato";
 }
 
-
 <div class="text-center">
     <h1 class="display-5">Cadastrar contato</h1>
 </div>
 <form asp-action="Criar" asp-controller="Contato" method="post">
-  <div class="mb-3">
+  <div class="form-group mb-3">
         <label for="nome" class="form-label">Nome</label>
         <input asp-for="Nome" type="text" class="form-control" id="nome" placeholder="Insira o nome">
+        @Html.ValidationMessageFor(x => x.Nome)
   </div>
-   <div class="mb-3">
+   <div class="form-group mb-3">
         <label for="email" class="form-label">Email</label>
         <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Insira o Email">
+        @Html.ValidationMessageFor(x => x.Email)
    </div>
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label for="celular" class="form-label">Celular</label>
         <input asp-for="Telefone" type="tel" class="form-control" id="celular" placeholder="(99) 9999 - 9999 ">
+        @Html.ValidationMessageFor(x => x.Telefone)
     </div>
   <button type="submit" class="btn btn-primary">Enviar</button>
    <a asp-controller="Contato" asp-action="Index" class="btn btn-secondary">Voltar</a>
