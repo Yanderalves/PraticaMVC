@@ -23,20 +23,54 @@ namespace SiteMVC.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Criar(ContatoModel contato)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    TempData["success"] = "Contato criado com sucesso.";
+                    _contatoRepositorio.Adicionar(contato);
+                    return RedirectToAction("Index");
+                }
+                return View(contato);
+
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Ih, deu alguma merda aí na hora de criar o contato, irmão.";
+                return View(contato);
+             }
+
+        }
+
         public IActionResult PaginaEditar(int id)
         {
             ContatoModel contato = _contatoRepositorio.BuscarContato(id);
             return View(contato);
         }
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult Editar(ContatoModel contato)
         {
-            _contatoRepositorio.Editar(contato);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    TempData["success"] = "Contato editado com sucesso.";
+                    _contatoRepositorio.Editar(contato);
+                    return RedirectToAction("Index");
+                }
+                return View("PaginaEditar", contato);
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Mlk, deu alguma merda aí ao editar.";
+                throw;
+            }
+            
         }
-
-
 
         public IActionResult BuscarContato()
         {
@@ -51,19 +85,26 @@ namespace SiteMVC.Controllers
 
         public IActionResult Deletar(int id)
         {
-            bool deletado = _contatoRepositorio.Deletar(id);
-            if (deletado)
+            try
             {
+                bool deletado = _contatoRepositorio.Deletar(id);
+                if (deletado)
+                {
+                    TempData["success"] = "Contato deletado com sucesso.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["error"] = "KKKKKKKKKKKKKKKK Deu merda, o apagar foi de comes e bebes";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "KKKKKKKKKKKKKKKK Deu merda, o apagar foi de comes e bebes";
                 return RedirectToAction("Index");
             }
+            
             return NotFound();
-        }
-
-        [HttpPost]
-        public IActionResult Criar(ContatoModel contato)
-        {
-            _contatoRepositorio.Adicionar(contato);
-            return RedirectToAction("Index");
         }
     } 
 }
