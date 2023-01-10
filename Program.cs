@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SiteMVC.Data;
 using SiteMVC.Repositorio;
+using System.Text.Json.Serialization;
 
 internal class Program
 {
@@ -13,9 +14,14 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
+        builder.Services.AddControllers().AddJsonOptions(options =>
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+
         builder.Services.AddDbContext<BancoContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         builder.Services.AddScoped<IContatoRepositorio, ContatoRepositorio>();
+        builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
         var app = builder.Build();
 
@@ -36,7 +42,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Login}/{action=Index}/{id?}");
 
         app.Run();
     }
