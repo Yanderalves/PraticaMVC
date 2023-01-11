@@ -1,0 +1,45 @@
+﻿@using SiteMVC.Models.Enums;
+@model UsuarioModel
+
+@{
+    ViewData["Title"] = "Criar Usuario";
+}
+
+<div class="text-center">
+    <h1 class="display-5">Cadastrar Usuario</h1>
+</div>
+<form asp-action="Criar" asp-controller="Usuario" method="post">
+  <div class="form-group mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input asp-for="Nome" type="text" class="form-control" id="nome" placeholder="Insira o nome">
+        @Html.ValidationMessageFor(x => x.Nome)
+  </div>
+   <div class="form-group mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Insira o Email">
+        @Html.ValidationMessageFor(x => x.Email)
+   </div>
+    <div class="form-group mb-3">
+        <label for="login" class="form-label">Login</label>
+        <input asp-for="Login" type="tel" class="form-control" id="login" placeholder="Insira o login">
+        @Html.ValidationMessageFor(x => x.Login)
+    </div>
+    <div class="form-group mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input asp-for="Senha" type="password" class="form-control" id="senha" placeholder="Insira a senha">
+        @Html.ValidationMessageFor(x => x.Senha)
+    </div>
+    <div class="form-group mb-3">
+        <label for="celular" class="form-label">Perfil</label>
+        <select asp-for="Perfil" class="form-select" aria-label="perfil">
+            <option value="">Selecione um perfil</option>
+            <option value="@EnumPerfil.Administrador">Administrador</option>
+            <option value="@EnumPerfil.Padrao">Padrao</option>
+        </select>
+        @Html.ValidationMessageFor(x => x.Perfil)
+    </div>
+  <button type="submit" class="btn btn-primary">Enviar</button>
+   <a asp-controller="Usuario" asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+   
+
