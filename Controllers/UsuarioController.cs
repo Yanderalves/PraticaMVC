@@ -45,7 +45,7 @@ namespace SiteMVC.Controllers
 
         public IActionResult PaginaEditar(int id)
         {
-            UsuarioModel usuario = _usuarioRepositorio.BuscarUsuario(id);
+            UsuarioModel usuario = _usuarioRepositorio.BuscarUsuarioPorId(id);
             return View(usuario);
         }
 
@@ -81,7 +81,7 @@ namespace SiteMVC.Controllers
 
         public IActionResult ConfirmarDelecao(int id)
         {
-            UsuarioModel contato = _usuarioRepositorio.BuscarUsuario(id);
+            UsuarioModel contato = _usuarioRepositorio.BuscarUsuarioPorId(id);
             return View(contato);
         }
 

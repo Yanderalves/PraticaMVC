@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SiteMVC.Data;
+using SiteMVC.Helper;
 using SiteMVC.Repositorio;
 using System.Text.Json.Serialization;
 
@@ -20,8 +21,18 @@ internal class Program
 
         builder.Services.AddDbContext<BancoContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         builder.Services.AddScoped<IContatoRepositorio, ContatoRepositorio>();
         builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+        builder.Services.AddScoped<ISessao, Sessao>();
+
+        builder.Services.AddSession(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
 
         var app = builder.Build();
 
@@ -39,6 +50,8 @@ internal class Program
         app.UseRouting();
 
         app.UseAuthorization();
+
+        app.UseSession();
 
         app.MapControllerRoute(
             name: "default",

@@ -32,7 +32,7 @@ namespace SiteMVC.Repositorio
 
         public bool Deletar(int id)
         {
-            UsuarioModel usuario = BuscarUsuario(id);
+            UsuarioModel usuario = BuscarUsuarioPorId(id);
             if(usuario != null)
             {
                 _context.Usuarios.Remove(usuario);
@@ -44,7 +44,7 @@ namespace SiteMVC.Repositorio
 
         public UsuarioModel Editar(UsuarioModel usuario)
         {
-            UsuarioModel usuarioBanco = BuscarUsuario(usuario.Id);
+            UsuarioModel usuarioBanco = BuscarUsuarioPorId(usuario.Id);
 
             usuarioBanco.Email = usuario.Email;
             usuarioBanco.Nome = usuario.Nome;
@@ -58,9 +58,15 @@ namespace SiteMVC.Repositorio
             return usuarioBanco;
         }
 
-        public UsuarioModel BuscarUsuario(int id)
+        public UsuarioModel BuscarUsuarioPorId(int id)
         {
             UsuarioModel usuario = _context.Usuarios.Find(id);
+            return usuario;
+        }
+
+        public UsuarioModel BuscarPorLogin(string login)
+        {
+            UsuarioModel usuario = _context.Usuarios.FirstOrDefault(x => x.Login == login);
             return usuario;
         }
     }

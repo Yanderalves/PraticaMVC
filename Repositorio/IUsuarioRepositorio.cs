@@ -8,6 +8,7 @@ namespace SiteMVC.Repositorio
         UsuarioModel Editar(UsuarioModel contato);
         bool Deletar(int id);
         List<UsuarioModel> ListarContatos();
-        UsuarioModel BuscarUsuario(int id);
+        UsuarioModel BuscarUsuarioPorId(int id);
+        UsuarioModel BuscarPorLogin(string login);
     }
 }

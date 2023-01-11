@@ -18,15 +18,15 @@
         </div>
     }
 
-<form asp-action="Entrar" asp-controller="Login">
+<form asp-action="Entrar" asp-controller="Login">   
   <div class="mb-3">
     <label for="login" class="form-label">Login</label>
-    <input asp-for="Login" type="login" class="form-control" id="login" />
+    <input asp-for="Login" type="login" class="form-control" id="login" placeholder="Digite o usuário" />
     @Html.ValidationMessageFor(x => x.Login)
   </div>
   <div class="mb-3">
     <label for="senha" class="form-label">Senha</label>
-    <input asp-for="Senha" type="password" class="form-control" id="senha">
+        <input asp-for="Senha" type="password" class="form-control" id="senha" placeholder="Digite a senha">
         @Html.ValidationMessageFor( x => x.Senha)
   </div>
   <button type="submit" class="btn btn-primary">Entrar</button>

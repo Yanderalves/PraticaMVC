@@ -19,5 +19,10 @@ namespace SiteMVC.Models
         public DateTime DataCadastro { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public DateTime? DataDelecao { get; set; }
+
+        public bool ValidaSenha(string senha)
+        {
+            if(senha == Senha) return true; return false;
+        }
     }
 }
