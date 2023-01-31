@@ -8,15 +8,26 @@
 
 <p>Página de login</p>
 @if (TempData["error"] != null)
-    {
-        <div class="container-alert">
-            <br />
-            <div class="alert alert-danger" role="alert">
-                <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
-                @TempData["error"]
-            </div>
+{
+    <div class="container-alert">
+        <br />
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+            @TempData["error"]
         </div>
-    }
+    </div>
+}
+
+@if (TempData["success"] != null){
+    <div class="container-alert">
+        <br />
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+            @TempData["success"]
+        </div>
+    </div>
+}
+
 
 <form asp-action="Entrar" asp-controller="Login">   
   <div class="mb-3">
@@ -30,4 +41,9 @@
         @Html.ValidationMessageFor( x => x.Senha)
   </div>
   <button type="submit" class="btn btn-primary">Entrar</button>
+  <p class="mb-4 text-sm-center mx-auto">
+      Esqueceu tua senha?
+    <a asp-action="RedefinirSenha" asp-controller="Login" class="text-primary text-gradient font-weight-bold">Clique aqui para redefinir.</a>
+
+  </p>
 </form>

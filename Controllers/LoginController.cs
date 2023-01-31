@@ -10,15 +10,17 @@ namespace SiteMVC.Controllers
         private readonly IUsuarioRepositorio _usuarioRepositorio;
 
         private readonly ISessao _sessao;
+        private readonly IEmail _email;
 
-        public LoginController(IUsuarioRepositorio usuarioRepositorio, ISessao sessao )
+        public LoginController(IUsuarioRepositorio usuarioRepositorio, ISessao sessao, IEmail email)
         {
             _usuarioRepositorio = usuarioRepositorio;
             _sessao = sessao;
+            _email = email;
         }
         public IActionResult Index()
         {
-            if(_sessao.BuscarSessao() != null)
+            if (_sessao.BuscarSessao() != null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -33,7 +35,8 @@ namespace SiteMVC.Controllers
                 {
                     UsuarioModel usuario = _usuarioRepositorio.BuscarPorLogin(loginModel.Login);
 
-                    if (usuario != null && usuario.ValidaSenha(loginModel.Senha)){
+                    if (usuario != null && usuario.ValidaSenha(loginModel.Senha))
+                    {
                         _sessao.CriarSessao(usuario);
                         return RedirectToAction("Index", "Home");
                     }
@@ -56,6 +59,44 @@ namespace SiteMVC.Controllers
         {
             _sessao.RemoverSessao();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult RedefinirSenha()
+        {
+            return View();
+        }
+
+        public IActionResult EnviarSenhaNova(RedefinirSenhaModel redefinirSenhaModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    UsuarioModel usuario = _usuarioRepositorio.BuscarPorEmailELogin(redefinirSenhaModel.Email, redefinirSenhaModel.Login);
+
+                    if (usuario != null)
+                    {
+                        string novaSenha = usuario.GerarSenhaNova();
+                        string mensagem = $"Olá {usuario.Nome}, Tua nova senha é {novaSenha}";
+
+                        _usuarioRepositorio.Editar(usuario);
+
+                        _email.EnviarEmail(usuario.Email, "Sistema de contatos - Redefinição de senha", mensagem);
+                        TempData["success"] = "Usuario encontrado. Senha enviada para o teu email cadastrado";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Login e/ou senha inválido(s)";
+                        return View("RedefinirSenha");
+                    }
+                }
+                return View("Index");
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Login e/ou senha inválido(s)";
+                throw;
+            }
         }
     }
 }

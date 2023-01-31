@@ -1,4 +1,5 @@
 ﻿using SiteMVC.Data;
+using SiteMVC.Helper;
 using SiteMVC.Models;
 
 namespace SiteMVC.Repositorio
@@ -6,20 +7,25 @@ namespace SiteMVC.Repositorio
     public class ContatoRepositorio : IContatoRepositorio
     {
         private readonly BancoContext _context;
-        public ContatoRepositorio(BancoContext context)
+        private readonly ISessao _sessao;
+        public ContatoRepositorio(BancoContext context, ISessao sessao)
         {
             _context = context;
+            _sessao = sessao;
         }
 
-        public List<ContatoModel> ListarContatos()
+        public List<ContatoModel> ListarContatos(int usuarioId)
         {
-            List<ContatoModel> contatos = _context.Contatos.ToList();
+            UsuarioModel usuarioAtual = _sessao.BuscarSessao();
+            List<ContatoModel> contatos = _context.Contatos.Where(x => x.UsuarioId == usuarioAtual.Id).ToList();
 
             return contatos;
         }
 
         public ContatoModel Adicionar(ContatoModel contato)
         {
+            UsuarioModel usuarioAtual = _sessao.BuscarSessao();
+            contato.UsuarioId = usuarioAtual.Id;
             if (contato != null)
             {
                 _context.Contatos.Add(contato);
@@ -43,10 +49,13 @@ namespace SiteMVC.Repositorio
 
         public ContatoModel Editar(ContatoModel contato)
         {
+            UsuarioModel usuarioAtual = _sessao.BuscarSessao();
             ContatoModel contatoBanco = BuscarContato(contato.Id);
+
             contatoBanco.Email = contato.Email;
             contatoBanco.Nome = contato.Nome;
             contatoBanco.Telefone = contato.Telefone;
+            contato.UsuarioId = usuarioAtual.Id;
 
             _context.Contatos.Update(contatoBanco);
             _context.SaveChanges();

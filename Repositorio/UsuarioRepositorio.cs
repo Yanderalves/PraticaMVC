@@ -1,4 +1,5 @@
-﻿using SiteMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SiteMVC.Data;
 using SiteMVC.Models;
 
 namespace SiteMVC.Repositorio
@@ -13,7 +14,7 @@ namespace SiteMVC.Repositorio
 
         public List<UsuarioModel> ListarContatos()
         {
-            List<UsuarioModel> usuario = _context.Usuarios.ToList();
+            List<UsuarioModel> usuario = _context.Usuarios.Include(x => x.Contatos).ToList();
 
             return usuario;
         }
@@ -22,7 +23,8 @@ namespace SiteMVC.Repositorio
         {
             if (usuario != null)
             {
-                usuario.DataCadastro = DateTime.Now;    
+                usuario.DataCadastro = DateTime.Now;
+                usuario.SetSenhaHash();
                 _context.Usuarios.Add(usuario);
                 _context.SaveChanges();
             }
@@ -67,6 +69,28 @@ namespace SiteMVC.Repositorio
         public UsuarioModel BuscarPorLogin(string login)
         {
             UsuarioModel usuario = _context.Usuarios.FirstOrDefault(x => x.Login == login);
+            return usuario;
+        }
+
+        public UsuarioModel BuscarPorEmailELogin(string email, string login)
+        {
+            return _context.Usuarios.FirstOrDefault(x => x.Email == email && x.Login == login);
+        }
+
+        public UsuarioModel AlterarSenha(AlterarSenhaModel usuarioAlterarSenha)
+        {
+            UsuarioModel usuario = BuscarUsuarioPorId(usuarioAlterarSenha.Id);
+
+            if (usuario == null) throw new Exception("Ih, usuário não encontrado");
+            if (!usuario.ValidaSenha(usuarioAlterarSenha.SenhaAtual)) throw new Exception("Ih, senha atual incorreta");
+            if (usuario.Senha == usuarioAlterarSenha.NovaSenha) throw new Exception("Ih, a nova senha há de ser distinta da senha atual");
+
+            usuario.SetNovaSenha(usuarioAlterarSenha.NovaSenha);
+            usuario.DataAtualizacao = DateTime.Now;
+
+            _context.Usuarios.Update(usuario);
+            _context.SaveChanges();
+
             return usuario;
         }
     }

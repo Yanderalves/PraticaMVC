@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMVC.Filters;
 using SiteMVC.Models;
 using System.Diagnostics;
 
 namespace SiteMVC.Controllers
 {
+    [PaginaUsuarioLogado]
     public class HomeController : Controller
     {
 

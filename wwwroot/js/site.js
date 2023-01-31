@@ -8,8 +8,12 @@ $(".close-alert").click(function(){
 })
 
 $(document).ready(function () {
-    ApplyDatatable("#table-contatos")
-    ApplyDatatable("#table-usuarios")
+    ApplyDatatable("#table-contatos");
+    ApplyDatatable("#table-usuarios");
+
+    $('.btn-total-contatos').click(function () {
+        $('#modalContatosUsuario').modal();
+    })
 });
 
 function ApplyDatatable(id) {

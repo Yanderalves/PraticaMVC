@@ -1,20 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMVC.Filters;
+using SiteMVC.Helper;
 using SiteMVC.Models;
 using SiteMVC.Repositorio;
 
 namespace SiteMVC.Controllers
 {
+    [PaginaUsuarioLogado]
     public class ContatoController : Controller
     {
         private readonly IContatoRepositorio _contatoRepositorio;
-        public ContatoController(IContatoRepositorio contatoRepositorio)
+        private readonly ISessao _sessao;
+        public ContatoController(IContatoRepositorio contatoRepositorio, ISessao sessao)
         {
-            _contatoRepositorio = contatoRepositorio;   
+            _contatoRepositorio = contatoRepositorio;
+            _sessao = sessao;
         }
 
         public IActionResult Index()
         {
-            List<ContatoModel> contatos = _contatoRepositorio.ListarContatos();
+            UsuarioModel usuarioAtual = _sessao.BuscarSessao();
+            List<ContatoModel> contatos = _contatoRepositorio.ListarContatos(usuarioAtual.Id);
             return View(contatos);
         }
 
@@ -41,7 +47,7 @@ namespace SiteMVC.Controllers
             {
                 TempData["error"] = "Ih, deu alguma merda aí na hora de criar o contato, irmão.";
                 return View(contato);
-             }
+            }
 
         }
 
@@ -69,7 +75,7 @@ namespace SiteMVC.Controllers
                 TempData["error"] = "Mlk, deu alguma merda aí ao editar.";
                 throw;
             }
-            
+
         }
 
         public IActionResult BuscarContato()
@@ -103,8 +109,8 @@ namespace SiteMVC.Controllers
                 TempData["error"] = "KKKKKKKKKKKKKKKK Deu merda, o apagar foi de comes e bebes";
                 return RedirectToAction("Index");
             }
-            
+
             return NotFound();
         }
-    } 
+    }
 }

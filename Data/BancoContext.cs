@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SiteMVC.Data.Map;
 using SiteMVC.Models;
 
 namespace SiteMVC.Data
@@ -13,5 +14,12 @@ namespace SiteMVC.Data
         public DbSet<ContatoModel> Contatos { get; set; }
 
         public DbSet<UsuarioModel> Usuarios { get; set; }
-    }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ContatoMap());
+
+            base.OnModelCreating(modelBuilder);
+        }
+    }   
 }

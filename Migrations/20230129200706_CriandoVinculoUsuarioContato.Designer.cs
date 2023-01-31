@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteMVC.Data;
 
@@ -11,9 +12,10 @@ using SiteMVC.Data;
 namespace SiteMVC.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    partial class BancoContextModelSnapshot : ModelSnapshot
+    [Migration("20230129200706_CriandoVinculoUsuarioContato")]
+    partial class CriandoVinculoUsuarioContato
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +90,12 @@ namespace SiteMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UsuarioModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioModelId");
 
                     b.ToTable("Usuarios");
                 });
@@ -96,7 +103,7 @@ namespace SiteMVC.Migrations
             modelBuilder.Entity("SiteMVC.Models.ContatoModel", b =>
                 {
                     b.HasOne("SiteMVC.Models.UsuarioModel", "Usuario")
-                        .WithMany("Contatos")
+                        .WithMany()
                         .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
@@ -104,7 +111,14 @@ namespace SiteMVC.Migrations
 
             modelBuilder.Entity("SiteMVC.Models.UsuarioModel", b =>
                 {
-                    b.Navigation("Contatos");
+                    b.HasOne("SiteMVC.Models.UsuarioModel", null)
+                        .WithMany("Usuarios")
+                        .HasForeignKey("UsuarioModelId");
+                });
+
+            modelBuilder.Entity("SiteMVC.Models.UsuarioModel", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

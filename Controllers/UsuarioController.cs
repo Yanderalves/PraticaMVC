@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMVC.Filters;
+using SiteMVC.Helper;
 using SiteMVC.Models;
 using SiteMVC.Repositorio;
 
 namespace SiteMVC.Controllers
 {
+    [PaginaRestritaAdmin]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+
+        private readonly ISessao _sessao;
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, ISessao sessao)
         {
-            _usuarioRepositorio= usuarioRepositorio;
+            _usuarioRepositorio = usuarioRepositorio;
+            _sessao = sessao;
         }
         public IActionResult Index()
         {
@@ -59,10 +65,10 @@ namespace SiteMVC.Controllers
                 {
                     usuario = new UsuarioModel()
                     {
-                        Id     = usuarioSemSenha.Id,
-                        Nome   = usuarioSemSenha.Nome,
-                        Login  = usuarioSemSenha.Login,
-                        Email  = usuarioSemSenha.Email,
+                        Id = usuarioSemSenha.Id,
+                        Nome = usuarioSemSenha.Nome,
+                        Login = usuarioSemSenha.Login,
+                        Email = usuarioSemSenha.Email,
                         Perfil = usuarioSemSenha.Perfil
                     };
 
@@ -89,15 +95,23 @@ namespace SiteMVC.Controllers
         {
             try
             {
-                bool deletado = _usuarioRepositorio.Deletar(id);
-                if (deletado)
+                if (_sessao.BuscarSessao().Id != id)
                 {
-                    TempData["success"] = "Usuario deletado com sucesso.";
-                    return RedirectToAction("Index");
+                    bool deletado = _usuarioRepositorio.Deletar(id);
+                    if (deletado)
+                    {
+                        TempData["success"] = "Usuario deletado com sucesso.";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["error"] = "KKKKKKKKKKKKKKKK Deu merda, o apagar foi de comes e bebes";
+                    }
                 }
                 else
                 {
-                    TempData["error"] = "KKKKKKKKKKKKKKKK Deu merda, o apagar foi de comes e bebes";
+                    TempData["error"] = "Não é possível apagar o usuario logado atualmente.";
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception)

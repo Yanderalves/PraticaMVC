@@ -13,8 +13,14 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Contato" asp-action="Index">Contato</a>
         </li>
+        @if(Model.Perfil == SiteMVC.Models.Enums.EnumPerfil.Administrador)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Index">Usuario</a>
+            </li>
+        }
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Index">Usuario</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="AlterarSenha" asp-action="Index">Alterar senha</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Sair">Sair</a>
